@@ -526,9 +526,7 @@ extension TLPhotosPickerViewController {
     
     // User Action
     @objc func titleTap() {
-      print("-!!!!!!!!!!!!!")
         guard collections.count > 0 else { return }
-      print("-!!!!!!!!!!!!?")
         self.albumPopView.show(self.albumPopView.isHidden, duration: self.configure.popup.duration)
     }
     
