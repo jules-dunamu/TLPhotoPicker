@@ -21,6 +21,8 @@ public protocol TLPhotosPickerViewControllerDelegate: class {
     func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController)
     func handleNoAlbumPermissions(picker: TLPhotosPickerViewController)
     func handleNoCameraPermissions(picker: TLPhotosPickerViewController)
+    func assetSelected()
+    func assetDeselected()
 }
 
 extension TLPhotosPickerViewControllerDelegate {
@@ -34,6 +36,8 @@ extension TLPhotosPickerViewControllerDelegate {
     public func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController) { }
     public func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) { }
     public func handleNoCameraPermissions(picker: TLPhotosPickerViewController) { }
+    public func assetSelected() { }
+    public func assetDeselected() { }
 }
 
 //for log
@@ -190,6 +194,9 @@ open class TLPhotosPickerViewController: UIViewController {
     @objc open var handleNoAlbumPermissions: ((TLPhotosPickerViewController) -> Void)? = nil
     @objc open var handleNoCameraPermissions: ((TLPhotosPickerViewController) -> Void)? = nil
     @objc open var dismissCompletion: (() -> Void)? = nil
+    @objc open var assetSelected: (() -> Void)? = nil
+    @objc open var assetDeselected: (() -> Void)? = nil
+
     private var completionWithPHAssets: (([PHAsset]) -> Void)? = nil
     private var completionWithTLPHAssets: (([TLPHAsset]) -> Void)? = nil
     private var didCancel: (() -> Void)? = nil
@@ -1288,6 +1295,10 @@ extension TLPhotosPickerViewController {
             if playRequestID?.indexPath == indexPath {
                 stopPlay()
             }
+            delegate?.assetDeselected()
+            if let handler = assetDeselected {
+              handler()
+            }
         } else {
         //select
             logDelegate?.selectedPhoto(picker: self, at: indexPath.row)
@@ -1300,6 +1311,10 @@ extension TLPhotosPickerViewController {
             
             if asset.type != .photo, configure.autoPlay {
                 playVideo(asset: asset, indexPath: indexPath)
+            }
+            delegate?.assetSelected()
+            if let handler = assetSelected {
+              handler()
             }
         }
 
