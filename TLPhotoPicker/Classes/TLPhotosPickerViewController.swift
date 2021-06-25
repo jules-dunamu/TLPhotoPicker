@@ -130,7 +130,7 @@ public struct Platform {
 
 open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var navigationBar: UINavigationBar!
-    @IBOutlet open var albumTitleView: UIView!
+    @IBOutlet open var albumTitleView: UIStackView!
     @IBOutlet open var albumTitleLabel: UILabel!
     @IBOutlet open var albumArrowImageView: UIImageView!
     @IBOutlet open var titleView: UIView!
@@ -410,8 +410,8 @@ extension TLPhotosPickerViewController {
         self.albumTitleView.addGestureRecognizer(tapGesture)
         self.albumTitleLabel.text = self.configure.customLocalizedTitle["Camera Roll"]
         self.albumArrowImageView.image = TLBundle.podBundleImage(named: "album_arrow")
-        self.titleView.addGestureRecognizer(tapGesture)
-        self.titleLabel.text = self.configure.customLocalizedTitle["Camera Roll"]
+//        self.titleView.addGestureRecognizer(tapGesture)
+//        self.titleLabel.text = self.configure.customLocalizedTitle["Camera Roll"]
         self.subTitleLabel.text = self.configure.tapHereToChange
         self.cancelButton.title = self.configure.cancelTitle
         self.doneButton.title = self.configure.doneTitle
