@@ -73,7 +73,7 @@ open class TLAlbumPopView: UIView, PopupViewProtocol {
         self.bgView.addGestureRecognizer(tapGesture)
         self.tableView.register(UINib(nibName: "TLCollectionTableViewCell", bundle: TLBundle.bundle()), forCellReuseIdentifier: "TLCollectionTableViewCell")
         if #available(iOS 13.0, *) {
-            self.popupView.backgroundColor = .systemBackground
+            self.popupView.backgroundColor = .white
         }
     }
     

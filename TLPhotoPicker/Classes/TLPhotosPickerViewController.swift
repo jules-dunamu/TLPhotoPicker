@@ -130,6 +130,9 @@ public struct Platform {
 
 open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var navigationBar: UINavigationBar!
+    @IBOutlet weak var albumTitleView: UIView!
+    @IBOutlet weak var albumTitleLabel: UILabel!
+    @IBOutlet weak var albumArrowImageView: UIImageView!
     @IBOutlet open var titleView: UIView!
     @IBOutlet open var titleLabel: UILabel!
     @IBOutlet open var subTitleStackView: UIStackView!
@@ -240,9 +243,9 @@ open class TLPhotosPickerViewController: UIViewController {
             let userInterfaceStyle = self.traitCollection.userInterfaceStyle
             let image = TLBundle.podBundleImage(named: "pop_arrow")
             if userInterfaceStyle.rawValue == 2 {
-                self.popArrowImageView.image = image?.colorMask(color: .systemBackground)
-                self.view.backgroundColor = .black
-                self.collectionView.backgroundColor = .black
+                self.popArrowImageView.image = image?.colorMask(color: .white)
+                self.view.backgroundColor = .white
+                self.collectionView.backgroundColor = .white
             }else {
                 self.popArrowImageView.image = image?.colorMask(color: .white)
                 self.view.backgroundColor = .white
@@ -404,6 +407,9 @@ extension TLPhotosPickerViewController {
         }
         self.indicator.startAnimating()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(titleTap))
+        self.albumTitleView.addGestureRecognizer(tapGesture)
+        self.albumTitleLabel.text = self.configure.customLocalizedTitle["Camera Roll"]
+        self.albumArrowImageView.image = TLBundle.podBundleImage(named: "album_arrow")
         self.titleView.addGestureRecognizer(tapGesture)
         self.titleLabel.text = self.configure.customLocalizedTitle["Camera Roll"]
         self.subTitleLabel.text = self.configure.tapHereToChange
@@ -1147,17 +1153,11 @@ extension TLPhotosPickerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if let sections = self.focusedCollection?.sections?[safe: section], sections.title != "camera" {
-            return self.customDataSouces?.headerReferenceSize() ?? CGSize.zero
-        }
-        return CGSize.zero
+        return self.customDataSouces?.headerReferenceSize() ?? CGSize.zero
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        if let sections = self.focusedCollection?.sections?[safe: section], sections.title != "camera" {
-            return self.customDataSouces?.footerReferenceSize() ?? CGSize.zero
-        }
-        return CGSize.zero
+        return self.customDataSouces?.footerReferenceSize() ?? CGSize.zero
     }
 }
 

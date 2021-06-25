@@ -19,7 +19,7 @@ open class TLCollectionTableViewCell: UITableViewCell {
             self.thumbImageView.accessibilityIgnoresInvertColors = true
         }
         if #available(iOS 13.0, *) {
-            self.contentView.backgroundColor = .systemBackground
+            self.contentView.backgroundColor = .white
         }
     }
 }
