@@ -130,9 +130,9 @@ public struct Platform {
 
 open class TLPhotosPickerViewController: UIViewController {
     @IBOutlet open var navigationBar: UINavigationBar!
-    @IBOutlet weak var albumTitleView: UIView!
-    @IBOutlet weak var albumTitleLabel: UILabel!
-    @IBOutlet weak var albumArrowImageView: UIImageView!
+    @IBOutlet open var albumTitleView: UIView!
+    @IBOutlet open var albumTitleLabel: UILabel!
+    @IBOutlet open var albumArrowImageView: UIImageView!
     @IBOutlet open var titleView: UIView!
     @IBOutlet open var titleLabel: UILabel!
     @IBOutlet open var subTitleStackView: UIStackView!
@@ -446,6 +446,7 @@ extension TLPhotosPickerViewController {
     
     private func updateTitle() {
         guard self.focusedCollection != nil else { return }
+        self.albumTitleLabel.text = self.focusedCollection?.title
         self.titleLabel.text = self.focusedCollection?.title
         updatePresentLimitedLibraryButton()
     }
@@ -521,7 +522,9 @@ extension TLPhotosPickerViewController {
     
     // User Action
     @objc func titleTap() {
+      print("-!!!!!!!!!!!!!")
         guard collections.count > 0 else { return }
+      print("-!!!!!!!!!!!!?")
         self.albumPopView.show(self.albumPopView.isHidden, duration: self.configure.popup.duration)
     }
     
