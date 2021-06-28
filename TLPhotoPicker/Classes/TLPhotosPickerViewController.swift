@@ -21,8 +21,8 @@ public protocol TLPhotosPickerViewControllerDelegate: class {
     func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController)
     func handleNoAlbumPermissions(picker: TLPhotosPickerViewController)
     func handleNoCameraPermissions(picker: TLPhotosPickerViewController)
-    func assetSelected()
-    func assetDeselected()
+    func didSelectAsset(asset: TLPHAsset)
+    func didDeselectAsset(asset: TLPHAsset)
 }
 
 extension TLPhotosPickerViewControllerDelegate {
@@ -36,8 +36,8 @@ extension TLPhotosPickerViewControllerDelegate {
     public func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController) { }
     public func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) { }
     public func handleNoCameraPermissions(picker: TLPhotosPickerViewController) { }
-    public func assetSelected() { }
-    public func assetDeselected() { }
+    public func didSelectAsset(asset: TLPHAsset) { }
+    public func didDeselectAsset(asset: TLPHAsset) { }
 }
 
 //for log
@@ -1295,7 +1295,7 @@ extension TLPhotosPickerViewController {
             if playRequestID?.indexPath == indexPath {
                 stopPlay()
             }
-            delegate?.assetDeselected()
+            delegate?.didDeselectAsset(asset: asset)
             if let handler = assetDeselected {
               handler()
             }
@@ -1312,7 +1312,7 @@ extension TLPhotosPickerViewController {
             if asset.type != .photo, configure.autoPlay {
                 playVideo(asset: asset, indexPath: indexPath)
             }
-            delegate?.assetSelected()
+            delegate?.didSelectAsset(asset: asset)
             if let handler = assetSelected {
               handler()
             }
