@@ -1267,7 +1267,7 @@ extension TLPhotosPickerViewController {
         }
     }
     
-    func toggleSelection(for cell: TLPhotoCollectionViewCell, at indexPath: IndexPath) {
+    @objc open func toggleSelection(for cell: TLPhotoCollectionViewCell, at indexPath: IndexPath) {
         guard let collection = focusedCollection, var asset = collection.getTLAsset(at: indexPath), let phAsset = asset.phAsset else { return }
         
         cell.popScaleAnim()
