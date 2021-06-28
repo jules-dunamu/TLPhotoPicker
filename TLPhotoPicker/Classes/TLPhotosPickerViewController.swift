@@ -21,8 +21,8 @@ public protocol TLPhotosPickerViewControllerDelegate: class {
     func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController)
     func handleNoAlbumPermissions(picker: TLPhotosPickerViewController)
     func handleNoCameraPermissions(picker: TLPhotosPickerViewController)
-    func didSelectAsset(asset: TLPHAsset)
-    func didDeselectAsset(asset: TLPHAsset)
+    func didSelectAsset(phAsset: PHAsset)
+    func didDeselectAsset(phAsset: PHAsset)
 }
 
 extension TLPhotosPickerViewControllerDelegate {
@@ -36,8 +36,8 @@ extension TLPhotosPickerViewControllerDelegate {
     public func didExceedMaximumNumberOfSelection(picker: TLPhotosPickerViewController) { }
     public func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) { }
     public func handleNoCameraPermissions(picker: TLPhotosPickerViewController) { }
-    public func didSelectAsset(asset: TLPHAsset) { }
-    public func didDeselectAsset(asset: TLPHAsset) { }
+    public func didSelectAsset(phAsset: PHAsset) { }
+    public func didDeselectAsset(phAsset: PHAsset) { }
 }
 
 //for log
@@ -194,8 +194,8 @@ open class TLPhotosPickerViewController: UIViewController {
     @objc open var handleNoAlbumPermissions: ((TLPhotosPickerViewController) -> Void)? = nil
     @objc open var handleNoCameraPermissions: ((TLPhotosPickerViewController) -> Void)? = nil
     @objc open var dismissCompletion: (() -> Void)? = nil
-    @objc open var assetSelected: (() -> Void)? = nil
-    @objc open var assetDeselected: (() -> Void)? = nil
+    @objc open var didSelectAsset: ((PHAsset) -> Void)? = nil
+    @objc open var didDeselectAsset: ((PHAsset) -> Void)? = nil
 
     private var completionWithPHAssets: (([PHAsset]) -> Void)? = nil
     private var completionWithTLPHAssets: (([TLPHAsset]) -> Void)? = nil
@@ -1295,9 +1295,10 @@ extension TLPhotosPickerViewController {
             if playRequestID?.indexPath == indexPath {
                 stopPlay()
             }
-            delegate?.didDeselectAsset(asset: asset)
-            if let handler = assetDeselected {
-              handler()
+            if let closure = self.didDeselectAsset {
+                closure(phAsset)
+            } else if let delegate = self.delegate {
+                delegate.didDeselectAsset(phAsset: phAsset)
             }
         } else {
         //select
@@ -1312,9 +1313,10 @@ extension TLPhotosPickerViewController {
             if asset.type != .photo, configure.autoPlay {
                 playVideo(asset: asset, indexPath: indexPath)
             }
-            delegate?.didSelectAsset(asset: asset)
-            if let handler = assetSelected {
-              handler()
+            if let closure = self.didSelectAsset {
+                closure(phAsset)
+            } else if let delegate = self.delegate {
+                delegate.didSelectAsset(phAsset: phAsset)
             }
         }
 
